@@ -90,7 +90,7 @@ jobs:
       - name: Helm Package
         env:
           VERSION: ${{ needs.setup.outputs.version }}
-        run: helm package ./.github/helm --version ${{ env.VERSION }} --app-version ${{ env.VERSION }}
+        run: helm package ./helm --version ${{ env.VERSION }} --app-version ${{ env.VERSION }}
       - name: Helm Push
         env:
           VERSION: ${{ needs.setup.outputs.version }}-${{ github.run_id }}
