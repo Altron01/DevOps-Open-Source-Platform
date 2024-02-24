@@ -26,7 +26,7 @@ spec:
                 - start
               env:
               {{- with .Values.stressTester.env }}
-                {{- toYaml . | nindent 14 }}
+                {{- toYaml . | nindent 16 }}
               {{- end }}
           restartPolicy: OnFailure
 {{- end -}}
