@@ -1,4 +1,5 @@
 be:
+  image: harbor.hwcops.altronstudio.com/latest/demo/be
   env:
     - name: PORT
       value: 3000
@@ -10,6 +11,7 @@ be:
   envFrom: []
 
 stressTester:
+  image: harbor.hwcops.altronstudio.com/latest/demo/stress-tester
   env:
     - name: BE_ENDPOINT
       value: "be.prod.altronstudio.com"

@@ -12,5 +12,6 @@ resources:
     cpu: 100m
     memory: 250Mi
 
+
 imagePullSecrets:
   name: harbor-registry
