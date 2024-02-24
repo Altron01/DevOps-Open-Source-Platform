@@ -1,0 +1,16 @@
+global:
+  image:
+    tag: ""
+
+app:
+  name: app-demo
+
+container:
+  port: 3000
+resources:
+  request:
+    cpu: 100m
+    memory: 250Mi
+
+imagePullSecrets:
+  name: harbor-registry

@@ -1,0 +1,97 @@
+name: Build & Publish Prod
+on:
+  push:
+    branches: [ 'main' ]
+jobs:
+  setup:
+    name: Setup Build Parameters
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.parameters.outputs.VERSION }}
+      repo: harbor.ops.altronstudio.com/stable
+      cache-repo: harbor.ops.altronstudio.com/build-cache
+      cache-ttl: 168h
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Export Parameters
+        id: parameters
+        run: |
+          echo "VERSION=$(git tag --sort=creatordate --merged | grep -oP '(\d+\.)?(\d+\.)?(\*|\d+)' | tail -1)" >> $GITHUB_OUTPUT
+  build-be:
+    name: Build Front API
+    runs-on: ubuntu-latest
+    needs: [ setup ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          registry: https://harbor.ops.altronstudio.com
+          username: ${{ secrets.HELM_REGISTRY_USER }}
+          password: ${{ secrets.HELM_REGISTRY_PASSWORD }}
+      - name: Build & Push BE
+        uses: int128/kaniko-action@v1
+        env:
+          BE_IMAGE: ${{ needs.setup.outputs.repo }}/demo/be:${{ needs.setup.outputs.version }}
+        with:
+          context: docker/be
+          tags: ${{ env.BE_IMAGE }}
+          push: true
+          cache: true
+          cache-repository: ${{ needs.setup.outputs.cache-repo }}/demo/be
+          cache-ttl: ${{ needs.setup.outputs.cache-ttl }}
+  build-stress-test:
+    name: Build Stress Test
+    runs-on: ubuntu-latest
+    needs: [ setup ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          registry: https://harbor.ops.altronstudio.com
+          username: ${{ secrets.HELM_REGISTRY_USER }}
+          password: ${{ secrets.HELM_REGISTRY_PASSWORD }}
+      - name: Build & Push
+        uses: int128/kaniko-action@v1
+        env:
+          STRESS_TESTER_IMAGE: ${{ needs.setup.outputs.repo }}/demo/stress-tester:${{ needs.setup.outputs.version }}
+        with:
+          context: docker/stress-tester
+          tags: ${{ env.STRESS_TESTER_IMAGE }}
+          push: true
+          cache: true
+          cache-repository: ${{ needs.setup.outputs.cache-repo }}/demo/stress-tester
+          cache-ttl: ${{ needs.setup.outputs.cache-ttl }}
+  build-helm:
+    name: Build & Publish Chart
+    runs-on: ubuntu-latest
+    needs: [ setup, build-be, build-stress-tester ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up helm
+        uses: azure/setup-helm@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to Helm
+        run: echo ${{ secrets.HELM_REGISTRY_PASSWORD }} | helm registry login harbor.ops.altronstudio.com -u ${{ secrets.HELM_REGISTRY_USER }} --password-stdin
+      - name: Helm Package
+        env:
+          VERSION: ${{ needs.setup.outputs.version }}
+        run: helm package ./.github/helm --version ${{ env.VERSION }} --app-version ${{ env.VERSION }}
+      - name: Helm Push
+        env:
+          VERSION: ${{ needs.setup.outputs.version }}-${{ github.run_id }}
+        run: helm push ./app-demo-${{ env.VERSION }}.tgz oci://${{ needs.setup.outputs.repo }}

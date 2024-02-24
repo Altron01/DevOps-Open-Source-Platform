@@ -1,0 +1,25 @@
+be:
+  env:
+    - name: PORT
+      value: 3000
+    - name: MIN
+      value: 35
+    - name: MAX
+      value: 50
+
+  envFrom: []
+
+stressTester:
+  env:
+    - name: BE_ENDPOINT
+      value: "be.dev.altronstudio.com"
+    - name: NUM_TESTS
+      value: 50
+
+autoscaling:
+  horizontal:
+    enabled: false
+
+domain:
+  host: be.dev.altronstudio.com
+  sslSecret: uat-bluontoolbox-com-wildcard-cert-tls

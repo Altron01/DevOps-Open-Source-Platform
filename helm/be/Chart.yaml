@@ -1,0 +1,9 @@
+apiVersion: v2
+name: app-demo
+description: Backend test application
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.16.0"

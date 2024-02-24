@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.app.name }}-cronjob
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      successfulJobsHistoryLimit: 1
+      template:
+        spec:
+          serviceAccountName: storage-workload-identity
+          imagePullSecrets:
+            - name: {{ .Values.imagePullSecrets.name }}
+          containers:
+            - name: "{{ .Values.app.name }}"
+              image: "{{ .Values.image.repository }}:{{ default (include "stressTest.defaultTag" .) .Values.global.image.tag }}"
+              imagePullPolicy: Always
+              resources:
+                requests:
+                  cpu: {{ .Values.resources.request.cpu }}
+                  memory: {{ .Values.resources.request.memory }}
+                limits:
+                  cpu: {{ .Values.resources.limit.cpu }}
+                  memory: {{ .Values.resources.limit.memory }}
+              command:
+                - npm
+                - start
+              env:
+              {{- with .Values.stressTest.env }}
+                {{- toYaml . | nindent 14 }}
+              {{- end }}
+          restartPolicy: OnFailure
