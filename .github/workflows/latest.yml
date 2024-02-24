@@ -46,8 +46,8 @@ jobs:
           cache: true
           cache-repository: ${{ needs.setup.outputs.cache-repo }}/demo/be
           cache-ttl: ${{ needs.setup.outputs.cache-ttl }}
-  build-stress-test:
-    name: Build Stress Test
+  build-stress-testes:
+    name: Build Stress Tester
     runs-on: ubuntu-latest
     needs: [ setup ]
     steps:
