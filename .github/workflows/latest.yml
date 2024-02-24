@@ -34,7 +34,7 @@ jobs:
         with:
           registry: https://harbor.hwcops.altronstudio.com
           username: ${{ secrets.DOCKER_REGISTRY_USER }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          password: '${{ secrets.DOCKER_REGISTRY_PASSWORD }}'
       - name: Build & Push BE
         uses: int128/kaniko-action@v1
         env:
@@ -60,7 +60,7 @@ jobs:
         with:
           registry: https://harbor.hwcops.altronstudio.com
           username: ${{ secrets.DOCKER_REGISTRY_USER }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          password: '${{ secrets.DOCKER_REGISTRY_PASSWORD }}'
       - name: Build & Push
         uses: int128/kaniko-action@v1
         env:
