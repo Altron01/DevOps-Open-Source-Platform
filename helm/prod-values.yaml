@@ -9,6 +9,13 @@ be:
 
   envFrom: []
 
+stressTester:
+  env:
+    - name: BE_ENDPOINT
+      value: "be.prod.altronstudio.com"
+    - name: NUM_TESTS
+      value: 50
+
 autoscaling:
   horizontal:
     enabled: true
@@ -17,6 +24,9 @@ autoscaling:
     averageRelativeCPU: 85
     averageRelativeMemory: 85
 
+cronjob:
+  enabled: false
+
 domain:
   host: be.prod.altronstudio.com
-  sslSecret: uat-bluontoolbox-com-wildcard-cert-tls
+  sslSecret: prod-altronstudio-com-wildcard-cert-tls

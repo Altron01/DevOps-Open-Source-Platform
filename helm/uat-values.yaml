@@ -18,8 +18,15 @@ stressTester:
 
 autoscaling:
   horizontal:
-    enabled: false
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    averageRelativeCPU: 85
+    averageRelativeMemory: 85
+
+cronjob:
+  enabled: true
 
 domain:
   host: be.dev.altronstudio.com
-  sslSecret: uat-bluontoolbox-com-wildcard-cert-tls
+  sslSecret: dev-altronstudio-com-wildcard-cert-tls
