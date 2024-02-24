@@ -32,7 +32,7 @@ jobs:
       - name: Docker login
         uses: docker/login-action@v2
         with:
-          registry: https://harbor.ops.altronstudio.com
+          registry: https://harbor.hwcops.altronstudio.com
           username: ${{ secrets.HELM_REGISTRY_USER }}
           password: ${{ secrets.HELM_REGISTRY_PASSWORD }}
       - name: Build & Push BE
@@ -58,7 +58,7 @@ jobs:
       - name: Docker login
         uses: docker/login-action@v2
         with:
-          registry: https://harbor.ops.altronstudio.com
+          registry: https://harbor.hwcops.altronstudio.com
           username: ${{ secrets.HELM_REGISTRY_USER }}
           password: ${{ secrets.HELM_REGISTRY_PASSWORD }}
       - name: Build & Push
