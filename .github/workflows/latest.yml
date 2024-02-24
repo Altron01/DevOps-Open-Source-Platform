@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.parameters.outputs.VERSION }}
-      repo: harbor.ops.altronstudio.com/latest
-      cache-repo: harbor.ops.altronstudio.com/build-cache
+      repo: harbor.hwcops.altronstudio.com/latest
+      cache-repo: harbor.hwcops.altronstudio.com/build-cache
       cache-ttl: 168h
     steps:
       - name: Checkout
@@ -86,7 +86,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to Helm
-        run: echo ${{ secrets.HELM_REGISTRY_PASSWORD }} | helm registry login harbor.ops.altronstudio.com -u ${{ secrets.HELM_REGISTRY_USER }} --password-stdin
+        run: echo ${{ secrets.HELM_REGISTRY_PASSWORD }} | helm registry login harbor.hwcops.altronstudio.com -u ${{ secrets.HELM_REGISTRY_USER }} --password-stdin
       - name: Helm Package
         env:
           VERSION: ${{ needs.setup.outputs.version }}-${{ github.run_id }}
