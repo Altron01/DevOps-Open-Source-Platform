@@ -19,7 +19,7 @@ spec:
         - name: {{ .Values.imagePullSecrets.name }}
       containers:
         - name: "{{ .Values.app.name }}"
-          image: "{{ .Values.be.image.repository }}:{{ default (include "be.defaultTag" .) .Values.global.image.tag }}"
+          image: "{{ .Values.be.image.repository }}:{{ default (include "app-demo.defaultTag" .) .Values.global.image.tag }}"
           imagePullPolicy: Always
           resources:
             requests:

@@ -15,20 +15,17 @@ spec:
             - name: {{ .Values.imagePullSecrets.name }}
           containers:
             - name: "{{ .Values.app.name }}"
-              image: "{{ .Values.stressTester.image.repository }}:{{ default (include "stressTest.defaultTag" .) .Values.global.image.tag }}"
+              image: "{{ .Values.stressTester.image.repository }}:{{ default (include "app-demo.defaultTag" .) .Values.global.image.tag }}"
               imagePullPolicy: Always
               resources:
                 requests:
                   cpu: {{ .Values.resources.request.cpu }}
                   memory: {{ .Values.resources.request.memory }}
-                limits:
-                  cpu: {{ .Values.resources.limit.cpu }}
-                  memory: {{ .Values.resources.limit.memory }}
               command:
                 - npm
                 - start
               env:
-              {{- with .Values.stressTest.env }}
+              {{- with .Values.stressTester.env }}
                 {{- toYaml . | nindent 14 }}
               {{- end }}
           restartPolicy: OnFailure
