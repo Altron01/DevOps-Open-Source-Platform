@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"lower_cluster","Source":"../modules/terraform-huaweicloud-cce","Dir":"../modules/terraform-huaweicloud-cce"},{"Key":"lower_vpc","Source":"../modules/terraform-huaweicloud-vpc","Dir":"../modules/terraform-huaweicloud-vpc"}]}

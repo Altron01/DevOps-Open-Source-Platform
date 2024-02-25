@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    argocd.argoproj.io/instance: demo-app
+  name: app-demo-cronjob
+  namespace: default
+spec:
+  jobTemplate:
+    spec:
+      successfulJobsHistoryLimit: 1
+      template:
+        spec:
+          containers:
+            - command:
+                - npm
+                - start
+              env:
+                - name: BE_ENDPOINT
+                  value: be.dev.altronstudio.com
+                - name: NUM_TESTS
+                  value: '50'
+              image: harbor.hwcops.altronstudio.com/latest/demo/stress-tester:0.2.1-8034909499
+              imagePullPolicy: Always
+              name: app-demo
+              resources:
+                limits:
+                  cpu: 200m
+                  memory: 150Mi
+                requests:
+                  cpu: 100m
+                  memory: 100Mi
+          imagePullSecrets:
+            - name: harbor-registry
+          restartPolicy: OnFailure
+  schedule: '*/5 * * * *'

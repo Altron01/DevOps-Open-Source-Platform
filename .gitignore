@@ -1,4 +1,5 @@
 .env
 node_modules/
-setup/
-terraform/
+setup/argocd/
+terraform/modules/
+.env-setup
