@@ -10,7 +10,6 @@ spec:
       successfulJobsHistoryLimit: 1
       template:
         spec:
-          serviceAccountName: storage-workload-identity
           imagePullSecrets:
             - name: {{ .Values.imagePullSecrets.name }}
           containers:
