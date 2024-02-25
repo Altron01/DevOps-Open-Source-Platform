@@ -29,10 +29,10 @@ spec:
             - containerPort: {{ .Values.container.port }}
           env:
           {{- with .Values.be.env }}
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml . | nindent 10 }}
           {{- end }}
           {{- with .Values.be.envFrom }}
           envFrom:
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml . | nindent 10 }}
           {{- end }}
           

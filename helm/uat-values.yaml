@@ -3,11 +3,11 @@ be:
     repository: harbor.hwcops.altronstudio.com/latest/demo/be
   env:
     - name: PORT
-      value: 3000
+      value: "3000"
     - name: MIN
-      value: 35
+      value: "35"
     - name: MAX
-      value: 50
+      value: "50"
 
   envFrom: []
 
@@ -18,7 +18,7 @@ stressTester:
     - name: BE_ENDPOINT
       value: "be.dev.altronstudio.com"
     - name: NUM_TESTS
-      value: 50
+      value: "50"
 
 autoscaling:
   horizontal:

@@ -1,7 +1,7 @@
 require('dotenv').config()
 
-const PORT = process.env.PORT
-const MIN = process.env.MIN
-const MAX = process.env.MAX
+const PORT = parseInt(process.env.PORT)
+const MIN = parseInt(process.env.MIN)
+const MAX = parseInt(process.env.MAX)
 
 module.exports = { PORT, MIN, MAX }

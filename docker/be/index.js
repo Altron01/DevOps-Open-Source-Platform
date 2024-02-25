@@ -11,7 +11,7 @@ function fibonacci(num) {
 }
 
 app.get('/', (req, res) => {
-  const n = Math.floor(Math.random() * (MAX - MIN)) + parseInt(MIN);
+  const n = Math.floor(Math.random() * (MAX - MIN)) + MIN;
 
   console.log('Calculating fibonacci for', n);
   const result = fibonacci(n);
