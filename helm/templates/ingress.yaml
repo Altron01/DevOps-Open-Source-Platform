@@ -3,20 +3,13 @@ kind: Ingress
 metadata:
   name: {{ .Values.app.name }}-ingress
   annotations:
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-    nginx.ingress.kubernetes.io/enable-access-log: "true"
-    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, authorization"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, PATCH, DELETE"
-    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    {{- with .Values.ingress.annotations }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   ingressClassName: nginx
   rules:
-    - host: {{ .Values.domain.host }}
+    - host: {{ .Values.ingress.domain.host }}
       http:
         paths:
           - backend:
@@ -28,5 +21,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-      - {{ .Values.domain.host }}
-      secretName: {{ .Values.domain.sslSecret }}
+      - {{ .Values.ingress.domain.host }}
+      secretName: {{ .Values.ingress.domain.sslSecret }}

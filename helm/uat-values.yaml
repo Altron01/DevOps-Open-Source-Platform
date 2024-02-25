@@ -1,4 +1,11 @@
 be:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 100m
+      memory: 150Mi
   image:
     repository: harbor.hwcops.altronstudio.com/latest/demo/be
   env:
@@ -12,6 +19,13 @@ be:
   envFrom: []
 
 stressTester:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 100m
+      memory: 150Mi
   image:
     repository: harbor.hwcops.altronstudio.com/latest/demo/stress-tester
   env:
@@ -25,12 +39,36 @@ autoscaling:
     enabled: true
     minReplicas: 1
     maxReplicas: 5
-    averageRelativeCPU: 85
-    averageRelativeMemory: 85
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 85
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 85
 
 cronjob:
   enabled: true
 
-domain:
-  host: be.dev.altronstudio.com
-  sslSecret: dev-altronstudio-com-wildcard-cert-tls
+
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
+    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, authorization"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, PATCH, DELETE"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+  domain:
+    host: be.dev.altronstudio.com
+    sslSecret: dev-altronstudio-com-wildcard-cert-tls

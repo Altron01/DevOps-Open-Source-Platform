@@ -22,16 +22,16 @@ spec:
           image: "{{ .Values.be.image.repository }}:{{ default (include "app-demo.defaultTag" .) .Values.global.image.tag }}"
           imagePullPolicy: Always
           resources:
-            requests:
-              cpu: {{ .Values.resources.request.cpu }}
-              memory: {{ .Values.resources.request.memory }}
+            {{- with .Values.be.resources }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           ports:
             - containerPort: {{ .Values.container.port }}
           env:
-          {{- with .Values.be.env }}
-            {{- toYaml . | nindent 10 }}
-          {{- end }}
-          {{- with .Values.be.envFrom }}
+            {{- with .Values.be.env }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with .Values.be.envFrom }}
           envFrom:
             {{- toYaml . | nindent 10 }}
           {{- end }}
