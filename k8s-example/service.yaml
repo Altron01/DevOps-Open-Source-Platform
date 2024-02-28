@@ -3,7 +3,6 @@ kind: Service
 metadata:
   labels:
     app: app-demo
-    argocd.argoproj.io/instance: demo-app
   name: app-demo-svc
   namespace: default
 spec:
