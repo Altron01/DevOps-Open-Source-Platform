@@ -411,7 +411,18 @@ controller:
     # Will be ignored for Kubernetes versions older than 1.20
     ##
     appProtocol: true
-    annotations: {}
+    annotations:
+      kubernetes.io/elb.class: union
+      kubernetes.io/elb.autocreate: 
+                '{
+                    "type": "public",
+                    "bandwidth_name": "cce-bandwidth-1551163379627",
+                    "bandwidth_chargemode": "traffic",
+                    "bandwidth_size": 5,
+                    "bandwidth_sharetype": "PER",
+                    "eip_type": "5_bgp",
+                    "name": "dev-ingress-controller"
+                  }'  
            
     labels: {}
     # clusterIP: ""
@@ -580,18 +591,7 @@ controller:
     existingPsp: ""
     networkPolicyEnabled: false
     service:
-      annotations:
-        kubernetes.io/elb.class: union
-        kubernetes.io/elb.autocreate: 
-                  '{
-                      "type": "public",
-                      "bandwidth_name": "cce-bandwidth-1551163379627",
-                      "bandwidth_chargemode": "traffic",
-                      "bandwidth_size": 5,
-                      "bandwidth_sharetype": "PER",
-                      "eip_type": "5_bgp",
-                      "name": "dev-ingress-controller"
-                    }'  
+      annotations: {}
       # clusterIP: ""
       externalIPs: []
       # loadBalancerIP: ""
