@@ -1,7 +1,6 @@
 .env
 node_modules/
 setup/argocd/
-terraform/modules/
 terraform/ops/.terraform/
 terraform/ops/.terraform.lock.hcl
 terraform/lower/.terraform/
