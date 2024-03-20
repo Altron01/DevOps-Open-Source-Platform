@@ -32,9 +32,13 @@ kubectl create namespace cattle-system
 ```
 Label the namespace to copy the certificate
 ```sh
+kubectl create namespace rancher
+```
+Label the namespace to copy the certificate
+```sh
 kubectl label ns rancher cert-manager-tls=ops-wildcard
 ```
 Install Rancher
 ```sh
-helm upgrade --install rancher rancher-latest/rancher --namespace cattle-system --set hostname=[your domain for rancher] --set bootstrapPassword=admin --set ingress.tls.source=letsEncrypt --set letsEncrypt.email=[email configured in cert-manager] --set letsEncrypt.ingress.class=nginx
+helm upgrade --install rancher rancher-stable/rancher --namespace cattle-system --set hostname=[your domain for rancher] --set bootstrapPassword=admin --set ingress.tls.source=letsEncrypt --set letsEncrypt.email=[email configured in cert-manager] --set letsEncrypt.ingress.class=nginx
 ```
