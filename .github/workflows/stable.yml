@@ -1,7 +1,7 @@
 name: Build & Publish Prod
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ 'disbaled-main' ]
 jobs:
   setup:
     name: Setup Build Parameters

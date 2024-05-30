@@ -1,7 +1,7 @@
 name: Build & Publish Non-Prod
 on:
   push:
-    branches: [ 'rc-*' ]
+    branches: [ 'disbaled-rc-*' ]
 jobs:
   setup:
     name: Setup Build Parameters
